@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+
+.Tic-tac-toe, .win {
+	display: inline-block;
+	position: absolute;
+	margin-top: 40px; width: 302px; 
+	top: 50%; left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+.Tic-tac-toe span {
+	display: inline-block;
+	width: 100px; height: 100px;
+	line-height: 100px;
+	margin: 0 -3px 0 -3px;
+	text-align: center;
+	border: 3px solid rgba(0,0,0,.5);
+	font-family: 'Indie Flower', cursive;
+	font-size: 100px;
+	color: transparent;
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+	-webkit-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
+}
+#x1 { 
+	border-top: none; border-left: none;
+    -webkit-animation-name: Tic-tac-toe-0; 
+            animation-name: Tic-tac-toe-0;
+	-webkit-animation-delay: 4s;
+	        animation-delay: 4s;
+}
+#x2 {
+    border-top: none; 
+}
+#x3 { 
+	border-top: none; border-right: none; 
+    -webkit-animation-name: Tic-tac-toe-X; 
+            animation-name: Tic-tac-toe-X;
+	-webkit-animation-delay: 1s;
+	        animation-delay: 1s;
+}
+#x4 { 
+	border-left: none;
+}
+#x5 { 
+    -webkit-animation-name: Tic-tac-toe-0; 
+            animation-name: Tic-tac-toe-0;
+	-webkit-animation-delay: 2s;
+	        animation-delay: 2s;
+}
+#x6 { 
+	border-right: none; 
+    -webkit-animation-name: Tic-tac-toe-X; 
+            animation-name: Tic-tac-toe-X;
+	-webkit-animation-delay: 7s;
+	        animation-delay: 7s;
+}
+#x7 {
+  	border-bottom: none; border-left: none; 
+    -webkit-animation-name: Tic-tac-toe-X; 
+            animation-name: Tic-tac-toe-X;
+	-webkit-animation-delay: 3s;
+	        animation-delay: 3s;
+}
+#x8 { 
+	border-bottom: none;
+    -webkit-animation-name: Tic-tac-toe-0; 
+            animation-name: Tic-tac-toe-0;
+	-webkit-animation-delay: 6s;
+	        animation-delay: 6s;
+}
+#x9 { 
+	border-bottom: none; border-right: none;
+    -webkit-animation-name: Tic-tac-toe-X; 
+            animation-name: Tic-tac-toe-X;
+	-webkit-animation-delay: 5s;
+	        animation-delay: 5s;
+}
+.win {
+	height: 270px; 
+	text-align: right;
+	z-index: 1;
+}
+.win span {
+	display: inline-block;
+	width: 4px; height: 0px;
+	background-color: #339966;
+	border-radius: 5px;
+	margin-right: 52px;
+	-webkit-animation-name: win;
+	        animation-name: win;
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+	-webkit-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
+	-webkit-animation-delay: 8s;
+	        animation-delay: 8s;
+}
+
+body {
+	background-color: #FFFFFF;
+	background-repeat: repeat;
+}
+
+
+.title {
+	font-family: 'Indie Flower', cursive;
+	font-size: 90px;
+	text-align: center;
+	color: rgba(0,0,0,.8);
+}
+
+@-webkit-keyframes Tic-tac-toe-X {
+   	from { color: transparent; }
+	to { color: red; }
+}
+@keyframes Tic-tac-toe-X {
+   	from { color: transparent; }
+	to { color: red; }
+}
+@-webkit-keyframes Tic-tac-toe-0 {
+   	from { color: transparent; }
+	to { color: blue; }
+}
+@keyframes Tic-tac-toe-0 {
+   	from { color: transparent; }
+	to { color: blue; }
+}
+@-webkit-keyframes win {
+   	from { height: 0; }
+	to { height: 100%; }
+}
+@keyframes win {
+   	from { height: 0; }
+	to { height: 100%; }
+}
+
+@media all and (max-height: 470px){
+	.title {
+		display: none;
+	}
+}
