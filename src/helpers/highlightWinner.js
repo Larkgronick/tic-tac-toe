@@ -16,5 +16,6 @@ function highlightWinner(squares) {
       }
     }
   }
-  
+
   export default highlightWinner;
+  

@@ -36,10 +36,13 @@ class Game extends React.Component {
             const history = this.state.history.slice(0, this.state.stepNumber + 1);
             const current = history[history.length - 1];
             const squares = current.squares.slice();
+
             if (calculateWinner(squares) || squares[i]) {
                 return;
             }
+
             squares[i] = this.state.xIsNext ? 'X' : 'O';
+
             this.setState({
                 history: history.concat([{
                     squares: squares,
@@ -47,6 +50,7 @@ class Game extends React.Component {
                 stepNumber: history.length,
                 xIsNext: !this.state.xIsNext,
             })
+
             if(this.state.opponent === 'Computer' && this.state.xIsNext) {
                 setTimeout(() => this.computerMove(squares), 700);
             }
@@ -57,24 +61,28 @@ class Game extends React.Component {
             if (calculateWinner(arr)) {
                 return;
             }
+
             let availableMoves = [];
+
             arr.forEach((el, index) => {if (el === null) {
                 availableMoves.push(index);
             }});
+
             let computerMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
             arr[computerMove] = 'O';
+
             this.setState({
                 xIsNext: true,
             })
         }
         
-    
         jumpTo(step) {
             if(step >= 0 && step < this.state.history.length){
                 this.setState({
                     stepNumber: step,
                     xIsNext: (step % 2) === 0,
                 })
+
                 if(this.state.opponent === 'Computer'){
                     this.setState({
                         stepNumber: step,
@@ -104,7 +112,6 @@ class Game extends React.Component {
             this.setState({
                 opponent: opponent,
                 modeSelected: true,
-            
             }); 
         }
 
@@ -147,16 +154,18 @@ class Game extends React.Component {
 
 
         render() {
+            let mode;
+            let status;
+            let shadow;
             const history = this.state.history;
             const current = history[this.state.stepNumber];
             const winner = calculateWinner(current.squares);
             const line = highlightWinner(current.squares);
-            let shadow;
+            
             if(this.state.drawerOpen) {
               shadow = <Shadow close={this.drawerClose} />
             }
 
-            let status;
             if(winner) {
                 if (winner === 'X' && this.state.opponent === 'Player') {
                     status = 'Player One win';
@@ -179,8 +188,6 @@ class Game extends React.Component {
                 }
             }
                
-
-            let mode;
             if(this.state.modeSelected) {
                 mode =           
                 <div className="game-field">
@@ -209,7 +216,7 @@ class Game extends React.Component {
                 </div>
             }
             
-            const moves = history.map((step, move) => {
+                const moves = history.map((step, move) => {
                 const desc = move ? 'Move #' + move : 'Game start';
             return (
                 <li key={move}>
@@ -218,8 +225,7 @@ class Game extends React.Component {
              );
             });
     
-          return (
-              
+          return ( 
             <div className="game">
               <Drawer show={this.state.drawerOpen} moves={moves}>
               </Drawer>

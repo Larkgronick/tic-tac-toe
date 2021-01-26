@@ -9,7 +9,7 @@ class Drawer extends React.Component {
         }
         return (
             <div className={drawerClass}>
-                <h1 onClick={() => console.log(this.props.history)}>Game history</h1>
+                <h1>Game history</h1>
                 <div className="game-info"> 
                     <ul>{this.props.moves}</ul>
                 </div>
@@ -18,4 +18,5 @@ class Drawer extends React.Component {
     }
 
 }
+
 export default Drawer;
