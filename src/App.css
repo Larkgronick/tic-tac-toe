@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
+  font-family: 'Indie Flower', cursive;
     margin: 20px;
   }
 
@@ -7,6 +9,10 @@ body {
   display: flex;
   justify-content: center;
 }
+
+  h1 {
+    text-align: center;
+  }
   
   ol, ul {
     padding-left: 30px;
@@ -26,6 +32,7 @@ body {
     background: #fff;
     border: 1px solid #999;
     float: left;
+    font-family: 'Indie Flower', cursive;
     font-size: 24px;
     font-weight: bold;
     line-height: 34px;
@@ -53,13 +60,38 @@ body {
   .game-field {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 
   }
+  
+  .game-status{
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .game-board{
+    margin: 0 0 30px 30%;
+  }
+
+  button{
+    font-family: 'Indie Flower', cursive;
+    margin: 2%;
+  }
+  
+  .attention{
+    background-color: lightcoral;
+  }
+
+  .actions{
+    background-color: blanchedalmond;
+  }
+
   .mode-select {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  .mode-select p {
+    text-align: center;
   }
   
   .game-info {

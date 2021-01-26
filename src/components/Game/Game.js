@@ -5,9 +5,14 @@ import Board from '../Board/Board';
 import Drawer from '../Drawer/Drawer';
 import Shadow from '../Shadow/Shadow';
 
-
 import calculateWinner from '../../helpers/calculateWinner';
+import highlightWinner from '../../helpers/highlightWinner';
 
+import computer from '../../assets/computer.png';
+import player from '../../assets/player.png';
+import undo from '../../assets/undo.png';
+import redo from '../../assets/redo.png';
+import book from '../../assets/history.png';
 
 class Game extends React.Component {
         constructor(props) {
@@ -42,7 +47,27 @@ class Game extends React.Component {
                 stepNumber: history.length,
                 xIsNext: !this.state.xIsNext,
             })
+            if(this.state.opponent === 'Computer' && this.state.xIsNext) {
+                setTimeout(() => this.computerMove(squares), 700);
+            }
         }
+
+        computerMove(arr)
+        {
+            if (calculateWinner(arr)) {
+                return;
+            }
+            let availableMoves = [];
+            arr.forEach((el, index) => {if (el === null) {
+                availableMoves.push(index);
+            }});
+            let computerMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            arr[computerMove] = 'O';
+            this.setState({
+                xIsNext: true,
+            })
+        }
+        
     
         jumpTo(step) {
             if(step >= 0 && step < this.state.history.length){
@@ -50,6 +75,12 @@ class Game extends React.Component {
                     stepNumber: step,
                     xIsNext: (step % 2) === 0,
                 })
+                if(this.state.opponent === 'Computer'){
+                    this.setState({
+                        stepNumber: step,
+                        xIsNext: true,
+                    })
+                }
                 this.drawerClose();
             }
         }
@@ -81,6 +112,9 @@ class Game extends React.Component {
             this.setState({
                 modeSelected: false,
                 stepNumber: 0,
+                history: [{
+                    squares: Array(9).fill(null),
+                }]
             })
         }
 
@@ -93,11 +127,30 @@ class Game extends React.Component {
             })
         }
 
+        undoAction = () => {
+            this.jumpTo(this.state.stepNumber - 1);
+            if(this.state.opponent === 'Computer'){
+                this.setState({
+                    xIsNext: true,
+                })
+            }
+        }
+
+        redoAction = () => {
+            this.jumpTo(this.state.stepNumber + 1);
+            if(this.state.opponent === 'Computer'){
+                this.setState({
+                    xIsNext: true,
+                })
+            }
+        }
+
+
         render() {
             const history = this.state.history;
             const current = history[this.state.stepNumber];
             const winner = calculateWinner(current.squares);
-
+            const line = highlightWinner(current.squares);
             let shadow;
             if(this.state.drawerOpen) {
               shadow = <Shadow close={this.drawerClose} />
@@ -105,40 +158,58 @@ class Game extends React.Component {
 
             let status;
             if(winner) {
-                status = winner + ' win';
-            } else {
-                status = 'Next player: ' + (this.state.xIsNext ? 'X' : '0');
+                if (winner === 'X' && this.state.opponent === 'Player') {
+                    status = 'Player One win';
+                } else if(winner === 'O' && this.state.opponent === 'Player') {
+                    status = 'Player Two win';
+                } else if(winner === 'X' && this.state.opponent === 'Computer') {
+                    status = 'Player win';
+                } else {
+                    status = 'Computer win';
+                }
+            } else if(this.state.stepNumber === 9){
+                status = 'It\'s a draw!';
+            }  else {
+                if (this.state.opponent === 'Player') {
+                    status = 'Next: ' + (this.state.xIsNext ? 'Player One (X)' : 'Player Two (O)');
+                    
+                } else {
+                    status = 'Next: ' + (this.state.xIsNext ? 'Player (X)' : 'Computer (O) thinks...');
+                }
             }
+               
 
             let mode;
             if(this.state.modeSelected) {
                 mode =           
                 <div className="game-field">
-                    <div>{status}</div>
-                    <div className="game-board">
-                      <Board 
-                          squares = {current.squares}
-                          onClick = {(i) => this.handleClick(i)}
-                      />
-                    </div>
-                    <button onClick={this.drawerToggle}>Game history</button>   
-                    <button onClick={this.selectModeOpen}>Choose opponent</button>   
-                    <button onClick={() => this.jumpTo(this.state.stepNumber - 1)}>⎌ Undo</button>
-                    <button onClick={() => this.jumpTo(this.state.stepNumber + 1)}>Redo</button>
-                    <button onClick={() => this.resetGame()}>Reset</button>
+                        <div className="game-status">{status}</div>
+                        <div className="game-board">
+                          <Board 
+                              squares = {current.squares}
+                              line = {line}
+                              onClick = {(i) => this.handleClick(i)}
+                          />
+                </div>
+                    <button className="actions" onClick={() => this.undoAction()}><img src={undo} alt="undo" />Undo</button>
+                    <button className="actions" onClick={() => this.redoAction()}><img src={redo} alt="redo" />Redo</button>
+                    <button className="actions" onClick={this.drawerToggle}><img src={book} alt="book" />Game history</button>   
+                    <p>These actions will reset the current progress!!</p>
+                    <button className="attention" onClick={this.selectModeOpen}>Choose opponent</button>   
+                    <button className="attention" onClick={() => this.resetGame()}>Reset</button>
                 </div>
             } else {
                 mode = 
                 <div className="mode-select">
                     <p>Choose your opponent:</p>
-                    <button onClick={this.selectMode}>Computer</button>
+                    <button onClick={this.selectMode}><img src={computer} alt="computer" />Computer</button>
                     <Intro />
-                    <button onClick={this.selectMode}>Player</button>
+                    <button onClick={this.selectMode}><img src={player} alt="player" />Player</button>
                 </div>
             }
             
             const moves = history.map((step, move) => {
-                const desc = move ? 'Return to move #' + move : 'Game start';
+                const desc = move ? 'Move #' + move : 'Game start';
             return (
                 <li key={move}>
                     <button onClick={() => {this.jumpTo(move)}}>{desc}</button>

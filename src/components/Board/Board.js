@@ -1,12 +1,17 @@
 import React from 'react'; 
 import Square from '../Square/Square';
 
-
-
 class Board extends React.Component { 
         renderSquare(i) {
+          let style;
+          if(this.props.line){
+            if(this.props.line.includes(i)) {
+              style = {backgroundColor: 'lightgreen'}
+            }
+          }
           return ( 
             <Square 
+              style={style}
               value={this.props.squares[i]} 
               onClick={() => this.props.onClick(i)}
             />
